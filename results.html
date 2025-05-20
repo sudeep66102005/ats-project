@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>JD Match Results</title>
+    <!-- Bootstrap CSS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .candidate-card {
+            border-radius: 1rem;
+            border: none;
+            padding: 2rem 1.5rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.07);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: linear-gradient(135deg, #f8fafc 60%, #e0f7fa 100%);
+            min-height: 200px;
+        }
+        .candidate-photo {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 2rem;
+            background: #DDDDDD;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: #ff9800;
+            border: 3px solid #ffe082;
+            box-shadow: 0 2px 8px rgba(255, 193, 7, 0.12);
+        }
+        .candidate-info {
+            background: #F79B72;
+            border-radius: 0.75rem;
+            padding: 1rem 1.5rem;
+            flex: 1;
+        }
+        .candidate-info .fw-bold {
+            color: #2A4759;
+        }
+        .candidate-info .text-muted {
+            color: #2A4759 !important;
+        }
+        body {
+            background: #EEEEEE;
+        }
+        .back-btn-top {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-5">
+        <div class="back-btn-top">
+            <a href="/" class="btn btn-warning mb-3">&larr; Back</a>
+        </div>
+        <h1 class="mb-4">Matched Candidates <small class="text-muted fs-5">(JD Skills: {{ jd_skills | join(', ') }})</small></h1>
+        {% if candidates %}
+            <div class="row">
+            {% for name, email, skills in candidates %}
+                <div class="col-md-6 col-lg-4 d-flex">
+                    <div class="candidate-card w-100">
+                        <div class="candidate-photo">
+                            {{ name[0] }}
+                        </div>
+                        <div class="candidate-info">
+                            <div class="fw-bold fs-5">{{ name }}</div>
+                            <div class="text-muted small mb-1">{{ email }}</div>
+                            <div>{{ skills }}</div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        {% else %}
+            <p>No candidates matched the job description.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Candidate Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <div class="container py-4">
+        <h1 class="mb-4">Candidate Dashboard</h1>
+
+        <form class="row g-3 mb-3" method="get">
+            <div class="col-auto">
+                <input type="text" class="form-control" name="search" placeholder="Search by skill, name or email" value="{{ search }}">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3">Search</button>
+            </div>
+        </form>
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <form method="POST" action="/clear-db" onsubmit="return confirm('Are you sure you want to clear the database?');" class="mb-0">
+                <button type="submit" class="btn btn-danger">🗑 Clear Database</button>
+            </form>
+            <a href="/" class="btn btn-secondary">← Back to Upload</a>
+        </div>
+        <table class="table table-bordered table-striped bg-white">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Skills</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for id, name, email, skills in candidates %}
+                <tr>
+                    <td>{{ name }}</td>
+                    <td>{{ email }}</td>
+                    <td>{{ skills }}</td>
+                    <td><a href="/preview/{{ id }}" class="btn btn-sm btn-info">Preview</a></td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center">No candidates found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</body>
+</html>

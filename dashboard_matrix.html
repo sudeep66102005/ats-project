@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATS Metrics Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-4">📊 ATS Analytics Dashboard</h1>
+
+        <!-- Average Time to Hire -->
+        <div class="bg-white rounded-2xl shadow p-6 mb-6">
+            <h2 class="text-xl font-semibold">Average Time to Hire</h2>
+            <p class="text-3xl mt-2 text-blue-600">{{ avg_time_to_hire }} days</p>
+        </div>
+
+        <!-- Source Distribution Chart -->
+        <div class="bg-white rounded-2xl shadow p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">Applications by Source</h2>
+            <canvas id="sourceChart" height="100"></canvas>
+        </div>
+
+        <!-- Monthly Applications Trend -->
+        <div class="bg-white rounded-2xl shadow p-6">
+            <h2 class="text-xl font-semibold mb-4">Monthly Applications (Last 6 Months)</h2>
+            <canvas id="monthlyChart" height="100"></canvas>
+        </div>
+    </div>
+
+    <script>
+        const sourceChart = new Chart(document.getElementById('sourceChart'), {
+            type: 'pie',
+            data: {
+                labels: {{ source_labels|tojson }},
+                datasets: [{
+                    label: 'Applications',
+                    data: {{ source_data|tojson }},
+                    backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#6366f1']
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'bottom' } }
+            }
+        });
+
+        const monthlyLabels = {{ monthly_data.keys()|list|tojson }};
+        const monthlyValues = {{ monthly_data.values()|list|tojson }};
+
+        const monthlyChart = new Chart(document.getElementById('monthlyChart'), {
+            type: 'bar',
+            data: {
+                labels: monthlyLabels,
+                datasets: [{
+                    label: 'Applications',
+                    data: monthlyValues,
+                    backgroundColor: '#3b82f6'
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
